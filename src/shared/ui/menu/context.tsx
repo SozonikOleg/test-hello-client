@@ -1,3 +1,8 @@
+/**
+ * Shared state for headless menu primitives.
+ * Consumers style via `data-layout`, `data-presentation`, `data-active` on descendants —
+ * no Tailwind or theme imports in this folder.
+ */
 import { createContext, useContext } from 'react'
 
 export type MenuLayout = 'sidebar-expanded' | 'sidebar-collapsed' | 'mobile'

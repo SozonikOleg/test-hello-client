@@ -54,6 +54,7 @@ export function MenuItem({
     onMouseEnter: handleMouseEnter,
   }
 
+  // DOM uses empty `data-active` for CSS [data-active] selectors; render prop gets boolean.
   const domItemProps = {
     'data-menu-item': '',
     'data-active': isActive ? ('' as const) : undefined,

@@ -1,17 +1,23 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import Menu, { useMenu } from '../menu'
-import { DesktopSidebar } from './DesktopSidebar'
-import { MobileBottomBar } from './MobileBottomBar'
-import { MobileFab } from './MobileFab'
-import { MobileHeaderMenu } from './MobileHeaderMenu'
-import { MobileSupplierHeader } from './MobileSupplierHeader'
-import { MobileMainSurface, MobileMenuBackdrop } from './mobileUi'
-import { ProductsCategoriesPanel } from './ProductsPage'
+import Menu, { useMenu } from '@/shared/ui/menu'
+import {
+  RouterDesktopSidebar,
+  RouterMobileBottomBar,
+  RouterMobileOverflowMenu,
+  useMenuRouteState,
+} from '@/features/menu-router'
+import {
+  MobileFab,
+  MobileMainSurface,
+  MobileMenuBackdrop,
+  MobileSupplierHeader,
+} from '@/shared/ui/mobile-shell'
+import { ProductsCategoriesPanel } from '@/pages/products'
 
 const EXPANDED_STORAGE_KEY = 'hello-client-menu-expanded'
 
+/** Restores sidebar width preference; headless `Menu` still owns runtime expanded state. */
 function readExpandedPreference(): boolean {
   try {
     const raw = localStorage.getItem(EXPANDED_STORAGE_KEY)
@@ -23,35 +29,40 @@ function readExpandedPreference(): boolean {
   return true
 }
 
+/**
+ * Application shell: layout chrome and persistence.
+ * Menu ↔ router wiring: `features/menu-router`. Shell: `widgets/app-shell`.
+ */
 function AppShellFrame({ children }: { children: ReactNode }) {
-  const { pathname } = useLocation()
-  const { isMobile, setMobileSubmenuId } = useMenu()
+  const { pathname } = useMenuRouteState()
+  const { isMobile, mobileSubmenuId, setMobileSubmenuId } = useMenu()
 
+  // Close mobile branch overlay after navigation (integration components use `Link`).
   useEffect(() => {
     setMobileSubmenuId(null)
   }, [pathname, setMobileSubmenuId])
 
-  const match = (path: string) => pathname === path
-  const inventoryActive = pathname.startsWith('/inventory')
+  // Page chrome driven by route — separate from menu highlight logic in integration/.
   const showCategories = pathname === '/inventory/products'
-  const overflowActive =
-    match('/tender') || match('/settings') || match('/knowledge')
   const showMobileFab =
     isMobile &&
-    (pathname.startsWith('/inventory/suppliers') || match('/clients'))
+    (pathname.startsWith('/inventory/suppliers') || pathname === '/clients')
 
   return (
     <>
-      <MobileMenuBackdrop />
+      <MobileMenuBackdrop
+        open={isMobile && mobileSubmenuId !== null}
+        onClose={() => setMobileSubmenuId(null)}
+      />
 
       <div className="flex h-[100dvh] overflow-hidden bg-white text-[#1a1d26]">
         {isMobile ? (
           <Menu.Panel className="fixed inset-x-0 bottom-0 z-50 bg-white">
-            <MobileBottomBar match={match} inventoryActive={inventoryActive} />
+            <RouterMobileBottomBar />
           </Menu.Panel>
         ) : (
           <Menu.Panel className="group/menu flex h-full shrink-0 flex-col border-r border-[#e8ebf0] bg-white transition-[width] data-[layout=sidebar-expanded]:w-[272px] data-[layout=sidebar-collapsed]:w-[72px]">
-            <DesktopSidebar match={match} inventoryActive={inventoryActive} />
+            <RouterDesktopSidebar />
           </Menu.Panel>
         )}
 
@@ -64,10 +75,7 @@ function AppShellFrame({ children }: { children: ReactNode }) {
             <>
               <MobileSupplierHeader />
               <div className="absolute right-3 top-3 z-10">
-                <MobileHeaderMenu
-                  match={match}
-                  overflowActive={overflowActive}
-                />
+                <RouterMobileOverflowMenu />
               </div>
               {showMobileFab ? <MobileFab /> : null}
             </>
@@ -95,6 +103,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <Menu
       aria-label="HelloClient"
       defaultExpanded={readExpandedPreference()}
+      // Persist collapse toggle alongside router (external state pattern from the brief).
       onExpandedChange={(expanded) => {
         try {
           localStorage.setItem(EXPANDED_STORAGE_KEY, String(expanded))

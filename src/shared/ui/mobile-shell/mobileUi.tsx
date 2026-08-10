@@ -1,23 +1,27 @@
 import type { ReactNode } from 'react'
-import { useMenu } from '../menu'
 
-/** Dims content when a mobile branch menu is open. */
-export function MobileMenuBackdrop() {
-  const { layout, mobileSubmenuId, setMobileSubmenuId } = useMenu()
-
-  if (layout !== 'mobile' || !mobileSubmenuId) return null
+/** Backdrop for mobile branch menus — presentation only. */
+export function MobileMenuBackdrop({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) {
+  if (!open) return null
 
   return (
     <button
       type="button"
       aria-label="Close menu"
       className="fixed inset-0 z-40 bg-black/20"
-      onClick={() => setMobileSubmenuId(null)}
+      onClick={onClose}
     />
   )
 }
 
 export function mobileTabClass(active: boolean) {
+  // `active` comes from `Menu.Item isActive` (route match), not from submenu `data-open`.
   return [
     'flex flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl px-0.5 py-2 text-[10px] leading-tight transition-colors',
     active

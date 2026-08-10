@@ -52,12 +52,14 @@ export function Menu({
     defaultProp: null,
   })
 
+  // Single source of truth for responsive behavior (see MenuPanel `data-layout`).
   const layout: MenuLayout = isMobile
     ? 'mobile'
     : expanded
       ? 'sidebar-expanded'
       : 'sidebar-collapsed'
 
+  // Flyouts only exist in collapsed desktop mode — clear when leaving it.
   useEffect(() => {
     if (layout !== 'sidebar-collapsed') {
       setFlyoutSubmenuId(null)

@@ -4,7 +4,7 @@ import {
   IconExpand,
   IconMore,
   IconSearch,
-} from './icons'
+} from '@/shared/ui/icons'
 
 function CategoriesTree({
   activeId,

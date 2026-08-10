@@ -38,6 +38,7 @@ export function MenuSubmenuContent({
         ? 'flyout'
         : 'mobile'
 
+  // Consumers target `data-[presentation=inline|flyout|mobile]` for layout-specific CSS.
   const [flyoutPos, setFlyoutPos] = useState({ top: 0, left: 0 })
 
   useLayoutEffect(() => {

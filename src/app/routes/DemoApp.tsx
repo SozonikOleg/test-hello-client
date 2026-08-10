@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { AppShell } from './AppShell'
-import { PlaceholderPage } from './PlaceholderPage'
-import { ProductsRoutePage } from './ProductsRoutePage'
+import { IntegrationDemoPage } from '@/pages/integration-demo'
+import { PlaceholderPage } from '@/pages/placeholder'
+import { ProductsRoutePage } from '@/pages/products'
+import { AppShell } from '@/widgets/app-shell'
 
 export function DemoApp() {
   return (
@@ -10,6 +11,7 @@ export function DemoApp() {
         path="/"
         element={<Navigate to="/inventory/products" replace />}
       />
+      {/* AppShell wraps inner routes so menu stays mounted while pages swap. */}
       <Route
         path="/*"
         element={
@@ -39,6 +41,10 @@ export function DemoApp() {
               <Route
                 path="knowledge"
                 element={<PlaceholderPage title="Knowledge Base" />}
+              />
+              <Route
+                path="demo/integration"
+                element={<IntegrationDemoPage />}
               />
             </Routes>
           </AppShell>

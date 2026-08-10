@@ -66,7 +66,7 @@ export function MenuSubmenuTrigger({
   }
 
   const handleMouseEnter = (event: MouseEvent<HTMLElement>) => {
-    // Flyout по hover только в свёрнутом сайдбаре.
+    // Hover opens flyout only when the sidebar is icon-only (collapsed desktop).
     if (menu.layout === 'sidebar-collapsed') {
       openFlyout()
     }

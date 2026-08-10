@@ -58,6 +58,7 @@ export function MenuSubmenu({
     }
   }, [isActive, menu.layout, setOpen])
 
+  // Open state is layout-specific: accordion `open`, global flyout id, or mobile sheet id.
   const flyoutOpen =
     menu.layout === 'sidebar-collapsed' && menu.flyoutSubmenuId === id
 
