@@ -43,4 +43,7 @@ const MenuCompound = Object.assign(Menu, {
   SubmenuContent: MenuSubmenuContent,
 })
 
+/** Alias for documentation and consumer code (`HeadlessMenu` vs router `RouterMenu`). */
+export const HeadlessMenu = MenuCompound
+
 export default MenuCompound

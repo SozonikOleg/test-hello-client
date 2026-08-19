@@ -1,11 +1,13 @@
 /**
- * Consumer layer: connect headless `Menu` to app-specific state (router, etc.).
- * Nothing here is imported from `shared/ui/menu` internals — only the public API.
+ * Consumer layer: connect headless `HeadlessMenu` to app-specific state (router, styling).
+ * Nothing here imports headless menu internals — only the public API.
  */
 export { useMenuRouteState } from './model/useMenuRouteState'
-export {
-  RouterDesktopSidebar,
-  RouterMobileBottomBar,
-  RouterMobileOverflowMenu,
-} from './ui/RouterMenuIntegration'
+export { RouterMenu } from './ui/RouterMenu'
+export type {
+  RouterMenuLayout,
+  RouterMenuProps,
+  RouterMenuItemProps,
+  RouterMenuGroupProps,
+} from './ui/RouterMenu'
 export { StateDrivenMenuExample } from './ui/StateDrivenMenu.example'

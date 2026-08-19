@@ -3,7 +3,7 @@ import Menu from '@/shared/ui/menu'
 import { IconCollapseSidebar } from '@/shared/ui/icons'
 import { BrandMark } from './menuStyles'
 
-/** Desktop shell: brand + toggle footer. `children` = `Menu.List` from integration layer. */
+/** Desktop shell: brand + toggle footer. `children` = `RouterMenu` list from the app layer. */
 export function DesktopSidebarChrome({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-full min-h-0 flex-col">

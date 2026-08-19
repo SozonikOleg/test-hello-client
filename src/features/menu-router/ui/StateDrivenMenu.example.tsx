@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import Menu from '@/shared/ui/menu'
+import { HeadlessMenu } from '@/shared/ui/menu'
 import { navItemClass, navIconClass } from '@/shared/ui/hello-client-menu'
 import { IconTasks, IconTrends } from '@/shared/ui/icons'
 
 type SectionId = 'trends' | 'tasks'
 
 /**
- * Minimal second consumer: same compound components, `isActive` from `useState`.
- * Replace `setActive` with `useMenuRouteState().match` to switch to React Router.
+ * HeadlessMenu without router — same compound API, `isActive` from local state.
+ * Swap `useState` for `useMenuRouteState()` + `RouterMenu` when routing is needed.
  */
 export function StateDrivenMenuExample() {
   const [active, setActive] = useState<SectionId>('trends')
@@ -15,13 +15,13 @@ export function StateDrivenMenuExample() {
   return (
     <div className="mx-auto max-w-md rounded-xl border border-[#e8ebf0] bg-white p-4 shadow-sm">
       <p className="mb-3 text-sm text-[#6b7280]">
-        Consumer-driven state (no router): current section is{' '}
+        HeadlessMenu (no router): current section is{' '}
         <strong className="text-[#1a1d26]">{active}</strong>
       </p>
-      <Menu aria-label="State-driven demo">
-        <Menu.Panel className="rounded-lg border border-[#eef0f4]">
-          <Menu.List className="flex flex-col gap-0.5 p-2">
-            <Menu.Item isActive={active === 'trends'}>
+      <HeadlessMenu aria-label="State-driven demo">
+        <HeadlessMenu.Panel className="rounded-lg border border-[#eef0f4]">
+          <HeadlessMenu.List className="flex flex-col gap-0.5 p-2">
+            <HeadlessMenu.Item isActive={active === 'trends'}>
               {(props) => (
                 <button
                   type="button"
@@ -35,8 +35,8 @@ export function StateDrivenMenuExample() {
                   Trends
                 </button>
               )}
-            </Menu.Item>
-            <Menu.Item isActive={active === 'tasks'}>
+            </HeadlessMenu.Item>
+            <HeadlessMenu.Item isActive={active === 'tasks'}>
               {(props) => (
                 <button
                   type="button"
@@ -50,10 +50,10 @@ export function StateDrivenMenuExample() {
                   Tasks
                 </button>
               )}
-            </Menu.Item>
-          </Menu.List>
-        </Menu.Panel>
-      </Menu>
+            </HeadlessMenu.Item>
+          </HeadlessMenu.List>
+        </HeadlessMenu.Panel>
+      </HeadlessMenu>
     </div>
   )
 }

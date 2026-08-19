@@ -11,12 +11,7 @@ export function useMenuRouteState() {
   const { pathname } = useLocation()
 
   const match = (path: string) => pathname === path
+  const matchPrefix = (prefix: string) => pathname.startsWith(prefix)
 
-  return {
-    pathname,
-    match,
-    inventoryActive: pathname.startsWith('/inventory'),
-    overflowActive:
-      match('/tender') || match('/settings') || match('/knowledge'),
-  }
+  return { pathname, match, matchPrefix }
 }
